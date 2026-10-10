@@ -26,8 +26,10 @@ jobs:
         run: python -m unittest discover -s tests -v
 
       - name: Build Docker image
-            - name: Lint Dockerfile (hadolint)
-        run: docker run --rm -i hadolint/hadolint < Dockerfile
+        run: docker build -t devops-flask-ci-demo .
+
+      - name: Lint Dockerfile (hadolint)
+        run: docker run --rm -i hadolint/hadolint hadolint --failure-threshold error - < Dockerfile
 
       - name: Smoke test container
         run: |
@@ -40,4 +42,3 @@ jobs:
         run: |
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
             aquasec/trivy:latest image --severity HIGH,CRITICAL --exit-code 0 devops-flask-ci-demo
-          
