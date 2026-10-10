@@ -1,10 +1,16 @@
 from flask import Flask, jsonify
 
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+logger = logging.getLogger(__name__)
+
 app = Flask(__name__)
 
 
 @app.route("/")
 def home():
+    logger.info("Request to /")
     return jsonify({
         "app": "devops-flask-ci-demo",
         "status": "running",
@@ -14,6 +20,7 @@ def home():
 
 @app.route("/health")
 def health():
+    logger.info("Request to /health")
     return jsonify({"status": "healthy"}), 200
 
 
